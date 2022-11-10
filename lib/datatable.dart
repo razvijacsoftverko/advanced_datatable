@@ -99,6 +99,7 @@ class AdvancedPaginatedDataTable extends StatefulWidget {
     this.getFooterRowText,
     this.customTableFooter,
     this.defaultFootAlignment = Alignment.centerRight,
+    this.headerRowColor,
     this.showHorizontalScrollbarAlways,
   })  : assert(actions == null || header != null),
         assert(columns.isNotEmpty),
@@ -223,6 +224,8 @@ class AdvancedPaginatedDataTable extends StatefulWidget {
   ///  * [defaultRowsPerPage]
   final int rowsPerPage;
 
+
+
   /// The default value for [rowsPerPage].
   ///
   /// Useful when initializing the field that will hold the current
@@ -267,6 +270,10 @@ class AdvancedPaginatedDataTable extends StatefulWidget {
   /// The alignment for the default footer of the datatable
   /// Default CenterRight
   final Alignment defaultFootAlignment;
+
+  /// Color of the data table header
+  /// Default is Color(0xFFFFFFFF)
+  final Color? headerRowColor;
 
   final bool? showHorizontalScrollbarAlways;
 
@@ -618,6 +625,7 @@ class PaginatedDataTableState extends State<AdvancedPaginatedDataTable> {
                       columnSpacing: widget.columnSpacing,
                       showCheckboxColumn: widget.showCheckboxColumn,
                       showBottomBorder: true,
+                      headingRowColor: MaterialStateProperty.all<Color?>(widget.headerRowColor),
                       rows: loading
                           ? loadingRows(
                               widget.source.lastDetails?.rows.length ?? widget.rowsPerPage,
