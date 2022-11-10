@@ -104,7 +104,8 @@ class AdvancedPaginatedDataTable extends StatefulWidget {
   })  : assert(actions == null || header != null),
         assert(columns.isNotEmpty),
         assert(
-          sortColumnIndex == null || (sortColumnIndex >= 0 && sortColumnIndex < columns.length),
+          sortColumnIndex == null ||
+              (sortColumnIndex >= 0 && sortColumnIndex < columns.length),
         ),
         assert(rowsPerPage > 0),
         assert(
@@ -223,6 +224,8 @@ class AdvancedPaginatedDataTable extends StatefulWidget {
   ///  * [defaultRowsPerPage]
   final int rowsPerPage;
 
+
+
   /// The default value for [rowsPerPage].
   ///
   /// Useful when initializing the field that will hold the current
@@ -298,7 +301,9 @@ class PaginatedDataTableState extends State<AdvancedPaginatedDataTable> {
   @override
   void initState() {
     super.initState();
-    _firstRowIndex = PageStorage.of(context)?.readState(context) as int? ?? widget.initialFirstRowIndex ?? 0;
+    _firstRowIndex = PageStorage.of(context)?.readState(context) as int? ??
+        widget.initialFirstRowIndex ??
+        0;
     widget.source.addListener(_handleDataSourceChanged);
     setLoadNextPage(firstRowIndex: 0);
 
@@ -317,7 +322,8 @@ class PaginatedDataTableState extends State<AdvancedPaginatedDataTable> {
       widget.source.addListener(_handleDataSourceChanged);
       _handleDataSourceChanged();
     }
-    if (oldWidget.sortColumnIndex != widget.sortColumnIndex || oldWidget.sortAscending != widget.sortAscending) {
+    if (oldWidget.sortColumnIndex != widget.sortColumnIndex ||
+        oldWidget.sortAscending != widget.sortAscending) {
       _handleDataSourceChanged();
     }
   }
@@ -379,7 +385,6 @@ class PaginatedDataTableState extends State<AdvancedPaginatedDataTable> {
         widget.sortColumnIndex,
         sortAscending: widget.sortAscending,
       );
-      setState(() {});
     }
   }
 
@@ -391,7 +396,8 @@ class PaginatedDataTableState extends State<AdvancedPaginatedDataTable> {
       _firstRowIndex = (rowIndex ~/ rowsPerPage) * rowsPerPage;
       setLoadNextPage();
     });
-    if ((widget.onPageChanged != null) && (oldFirstRowIndex != _firstRowIndex)) {
+    if ((widget.onPageChanged != null) &&
+        (oldFirstRowIndex != _firstRowIndex)) {
       widget.onPageChanged!(_firstRowIndex);
     }
   }
@@ -399,7 +405,9 @@ class PaginatedDataTableState extends State<AdvancedPaginatedDataTable> {
   DataRow _getBlankRowFor(int index) {
     return DataRow.byIndex(
       index: index,
-      cells: widget.columns.map<DataCell>((DataColumn column) => DataCell.empty).toList(),
+      cells: widget.columns
+          .map<DataCell>((DataColumn column) => DataCell.empty)
+          .toList(),
     );
   }
 
@@ -466,7 +474,9 @@ class PaginatedDataTableState extends State<AdvancedPaginatedDataTable> {
     pageTo(((_rowCount - 1) / widget.rowsPerPage).floor() * widget.rowsPerPage);
   }
 
-  bool _isNextPageUnavailable() => !_rowCountApproximate && (_firstRowIndex + widget.rowsPerPage >= _rowCount);
+  bool _isNextPageUnavailable() =>
+      !_rowCountApproximate &&
+      (_firstRowIndex + widget.rowsPerPage >= _rowCount);
 
   final GlobalKey _tableKey = GlobalKey();
 
@@ -567,15 +577,19 @@ class PaginatedDataTableState extends State<AdvancedPaginatedDataTable> {
                       // list and then tweak them appropriately.
                       // See https://material.io/design/components/data-tables.html#tables-within-cards
                       style: _selectedRowCount > 0
-                          ? themeData.textTheme.subtitle1!.copyWith(color: themeData.colorScheme.secondary)
-                          : themeData.textTheme.headline6!.copyWith(fontWeight: FontWeight.w400),
+                          ? themeData.textTheme.subtitle1!
+                              .copyWith(color: themeData.colorScheme.secondary)
+                          : themeData.textTheme.headline6!
+                              .copyWith(fontWeight: FontWeight.w400),
                       child: IconTheme.merge(
                         data: const IconThemeData(
                           opacity: 0.54,
                         ),
                         child: Ink(
                           height: 64.0,
-                          color: _selectedRowCount > 0 ? themeData.secondaryHeaderColor : null,
+                          color: _selectedRowCount > 0
+                              ? themeData.secondaryHeaderColor
+                              : null,
                           child: Padding(
                             padding: EdgeInsetsDirectional.only(
                               start: startPadding,
@@ -609,6 +623,7 @@ class PaginatedDataTableState extends State<AdvancedPaginatedDataTable> {
                       headingRowHeight: widget.headingRowHeight,
                       horizontalMargin: widget.horizontalMargin,
                       columnSpacing: widget.columnSpacing,
+                      dataRowColor: MaterialStateProperty.all<Color?>(widget.headerRowColor),
                       showCheckboxColumn: widget.showCheckboxColumn,
                       showBottomBorder: true,
                       headingRowColor: MaterialStateProperty.all<Color?>(widget.headerRowColor),
@@ -661,7 +676,8 @@ class PaginatedDataTableState extends State<AdvancedPaginatedDataTable> {
       final footerTextStyle = themeData.textTheme.caption;
       final footerWidgets = <Widget>[];
       if (widget.onRowsPerPageChanged != null) {
-        final List<Widget> availableRowsPerPage = widget.availableRowsPerPage.map<DropdownMenuItem<int>>((int value) {
+        final List<Widget> availableRowsPerPage =
+            widget.availableRowsPerPage.map<DropdownMenuItem<int>>((int value) {
           return DropdownMenuItem<int>(
             value: value,
             key: ValueKey('opt_$value'),
@@ -689,7 +705,8 @@ class PaginatedDataTableState extends State<AdvancedPaginatedDataTable> {
                   value: widget.rowsPerPage,
                   onTap: () {},
                   onChanged: (newRowsPerPage) {
-                    if (newRowsPerPage != null && newRowsPerPage != widget.rowsPerPage) {
+                    if (newRowsPerPage != null &&
+                        newRowsPerPage != widget.rowsPerPage) {
                       setLoadNextPage(rowsPerPage: newRowsPerPage);
                       if (widget.onRowsPerPageChanged != null) {
                         widget.onRowsPerPageChanged?.call(newRowsPerPage);
@@ -777,7 +794,8 @@ class PaginatedDataTableState extends State<AdvancedPaginatedDataTable> {
       _rowCountApproximate,
     );
 
-    if (widget.source.lastDetails != null && widget.source.lastDetails!.filteredRows != null) {
+    if (widget.source.lastDetails != null &&
+        widget.source.lastDetails!.filteredRows != null) {
       //Filtered data source show addtional information
       amountText += ' from (${widget.source.lastDetails!.totalRows})';
     }
