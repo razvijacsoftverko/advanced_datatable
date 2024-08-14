@@ -301,7 +301,7 @@ class PaginatedDataTableState extends State<AdvancedPaginatedDataTable> {
   @override
   void initState() {
     super.initState();
-    _firstRowIndex = PageStorage.of(context)?.readState(context) as int? ??
+    _firstRowIndex = PageStorage.of(context).readState(context) as int? ??
         widget.initialFirstRowIndex ??
         0;
     widget.source.addListener(_handleDataSourceChanged);
@@ -577,9 +577,9 @@ class PaginatedDataTableState extends State<AdvancedPaginatedDataTable> {
                       // list and then tweak them appropriately.
                       // See https://material.io/design/components/data-tables.html#tables-within-cards
                       style: _selectedRowCount > 0
-                          ? themeData.textTheme.subtitle1!
+                          ? themeData.textTheme.titleMedium!
                               .copyWith(color: themeData.colorScheme.secondary)
-                          : themeData.textTheme.headline6!
+                          : themeData.textTheme.titleLarge!
                               .copyWith(fontWeight: FontWeight.w400),
                       child: IconTheme.merge(
                         data: const IconThemeData(
@@ -673,7 +673,7 @@ class PaginatedDataTableState extends State<AdvancedPaginatedDataTable> {
       //No footer present render the default one
       final themeData = Theme.of(context);
       final localizations = MaterialLocalizations.of(context);
-      final footerTextStyle = themeData.textTheme.caption;
+      final footerTextStyle = themeData.textTheme.bodySmall;
       final footerWidgets = <Widget>[];
       if (widget.onRowsPerPageChanged != null) {
         final List<Widget> availableRowsPerPage =
